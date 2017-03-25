@@ -21,6 +21,7 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+    "sort"
 
 	"github.com/spf13/afero"
 	"github.com/spf13/cast"
@@ -139,7 +140,15 @@ func createMetadata(archetype parser.Page, name string) (map[string]interface{},
 
 	metadata["date"] = date.Format(time.RFC3339)
 
-	return metadata, nil
+    keys := make([]string, 0, len(metadata))
+
+    for key := range metadata {
+        keys = append(keys, key)
+    }
+
+    sort.Strings(keys)
+    
+    return keys, nil
 }
 
 // FindArchetype takes a given kind/archetype of content and returns an output
